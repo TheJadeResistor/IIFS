@@ -37,7 +37,7 @@ void initializeIMUs() {
     i2cManager.begin();
 
     // Initialize each IMU on a specific channel
-    for (uint8_t i = startChannel; i < NUM_IMUS; i++) {
+    for (uint8_t i = startChannel; i < NUM_IMUS-1; i++) {
         i2cManager.addDevice(IMU_ADDR, i);  // Add each IMU to a specific channel on TCA9548A
         
         // Select the IMU channel and initialize the IMU
@@ -49,7 +49,7 @@ void initializeIMUs() {
 
 // Function to read and filter raw IMU data
 void readAndFilterIMUData() {
-    for (uint8_t i = 0; i < NUM_IMUS; i++) {
+    for (uint8_t i = 0; i < NUM_IMUS-1; i++) {
         // Select the IMU channel
         i2cManager.selectDevice(i);
 

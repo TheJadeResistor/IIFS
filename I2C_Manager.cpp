@@ -10,15 +10,6 @@
 //0 1 1 :0x76
 //1 1 1 :0x77
 
-
-// void TCA9548A(uint8_t bus){
-//   Wire.beginTransmission(0x70);  // TCA9548A address is 0x70
-//   Wire.write(1 << bus);          // send byte to select bus
-//   Wire.endTransmission();
-//   Serial.print(bus);
-// }
-
-
 #include "I2C_Manager.h"
 
 #define I2C_SDA 21
