@@ -5,7 +5,7 @@
 #include <utility>  // For std::pair
 
 
-class I2cManager {
+class I2C_Manager {
 private:
     // TCA9548A I2C multiplexer address
     const uint8_t multiplexerAddress;
@@ -20,8 +20,8 @@ private:
     bool selectChannel(uint8_t channel);
 
 public:
-    // Constructor: Initializes the I2C manager with the multiplexer address
-    I2cManager(uint8_t multiplexerAddr = 0x70);  // Default address for TCA9548A
+    // Constructor: Initializes the I2C manager with the default multiplexer address
+    I2C_Manager(uint8_t multiplexerAddr = 0x70);  // Default address for TCA9548A
 
     // Initialize the I2C bus
     void begin();
@@ -34,6 +34,9 @@ public:
 
     // Get the channel associated with a specific device address
     int8_t getDeviceChannel(uint8_t deviceAddress);
+
+    // Get the I2C address associated with a specific device address
+    uint8_t getDeviceAddress(uint8_t index);
 
     // Read data from the connected I2C device (BMI160 or others)
     uint8_t readByte(uint8_t deviceAddr, uint8_t regAddr);

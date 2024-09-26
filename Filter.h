@@ -29,6 +29,8 @@ public:
     float filterGyroY(float measurement);
     float filterGyroZ(float measurement);
 
+    void filterData(float ax, float ay, float az, float gx, float gy, float gz);
+
     // Reset the filter (optional)
     void reset();
 };

@@ -2,37 +2,25 @@
 
 #include <Wire.h>
 #include <Arduino.h>
-#include <Quaternion.h>  // Assuming you have a Quaternion class
+#include <BMI160Gen.h>  // Use the BMI160 library
+#include "Quaternion.h"
+#include "I2C_Manager.h"
 
-const uint8_t IMU_I2C_ADDRESS = 0x70; //address for imu multiplexer 
 
 class IMU {
 public:
-    // Virtual methods for generic IMU functions
-    virtual bool begin() = 0;  // Initialize the IMU
-    virtual void readData() = 0;  // Read sensor data
-    virtual Quaternion getQuaternion() = 0;  // Get the orientation in quaternion form
-    virtual float getRoll() = 0;  // Get roll
-    virtual float getPitch() = 0;  // Get pitch
-    virtual float getYaw() = 0;  // Get yaw
+    IMU(uint8_t address = 0x68);  // Constructor with default I2C address
+    ~IMU();
+    bool begin(I2C_Manager i2cManager, int deviceChannel);
+    void readData();
+    Quaternion getQuaternion();
+    void getEulerAngles(float roll, float pitch, float yaw);
 
-    virtual ~IMU() {}  // Virtual destructor for proper cleanup
-};
-
-class BMI160 : public IMU {
-public:
-    BMI160(uint8_t address = IMU_I2C_ADDRESS);  // Constructor with optional I2C address
-    bool begin() override;
-    void readData() override;
-    Quaternion getQuaternion() override;
-    float getRoll() override;
-    float getPitch() override;
-    float getYaw() override;
+    float accX, accY, accZ;  // Accelerometer readings
+    float gyroX, gyroY, gyroZ;  // Gyroscope readings
 
 private:
     uint8_t _address;  // I2C address
-    float accX, accY, accZ;  // Accelerometer readings
-    float gyroX, gyroY, gyroZ;  // Gyroscope readings
     void calculateOrientation();  // Helper to calculate quaternion/orientation
     Quaternion currentQuaternion;
 };

@@ -77,6 +77,16 @@ float Filter::filterGyroZ(float measurement) {
     return gyroZ_estimate;
 }
 
+void Filter::filterData(float ax, float ay, float az, float gx, float gy, float gz) {
+  ax = filterAccelX(ax);
+  ay = filterAccelX(ay);
+  az = filterAccelX(az);
+
+  gx = filterAccelX(gx);
+  gy = filterAccelX(gy);
+  gz = filterAccelX(gz);
+}
+
 // Optional: Reset the Kalman filter estimates and covariances
 void Filter::reset() {
     accelX_estimate = accelY_estimate = accelZ_estimate = 0.0f;

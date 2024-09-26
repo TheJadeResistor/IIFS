@@ -19,19 +19,19 @@
 // }
 
 
-#include "I2cManager.h"
+#include "I2C_Manager.h"
 
 // Constructor to initialize the multiplexer address
-I2cManager::I2cManager(uint8_t multiplexerAddr) : multiplexerAddress(multiplexerAddr), currentChannel(0xFF) {
+I2C_Manager::I2C_Manager(uint8_t multiplexerAddr) : multiplexerAddress(multiplexerAddr), currentChannel(0xFF) {
 }
 
 // Initialize the I2C bus
-void I2cManager::begin() {
+void I2C_Manager::begin() {
     Wire.begin();  // Initialize I2C bus
 }
 
 // Private method to switch to a specific channel on the TCA9548A
-bool I2cManager::selectChannel(uint8_t channel) {
+bool I2C_Manager::selectChannel(uint8_t channel) {
     if (channel > 7 || channel == currentChannel) {
         return false;  // Invalid channel or already selected
     }
@@ -47,19 +47,19 @@ bool I2cManager::selectChannel(uint8_t channel) {
 }
 
 // Public method to select a device on a specific channel
-bool I2cManager::selectDevice(uint8_t channel) {
+bool I2C_Manager::selectDevice(uint8_t channel) {
     return selectChannel(channel);  // Call the private method to switch channels
 }
 
 // Dynamically add a device with an address to a specific channel
-bool I2cManager::addDevice(uint8_t deviceAddress, uint8_t channel) {
+bool I2C_Manager::addDevice(uint8_t deviceAddress, uint8_t channel) {
     if (channel > 7) return false;  // Invalid channel
     devices.push_back({deviceAddress, channel});  // Add the device to the list
     return true;
 }
 
 // Get the channel associated with a specific device address
-int8_t I2cManager::getDeviceChannel(uint8_t deviceAddress) {
+int8_t I2C_Manager::getDeviceChannel(uint8_t deviceAddress) {
     for (auto &device : devices) {
         if (device.first == deviceAddress) {
             return device.second;  // Return the channel number
@@ -69,7 +69,7 @@ int8_t I2cManager::getDeviceChannel(uint8_t deviceAddress) {
 }
 
 // Method to read a single byte from a specific register of an I2C device
-uint8_t I2cManager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
+uint8_t I2C_Manager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
     if (channel == -1 || !selectDevice(channel)) return 0;  // Invalid channel or failed to select it
 
@@ -81,7 +81,7 @@ uint8_t I2cManager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
 }
 
 // Method to read multiple bytes from a specific register of an I2C device
-void I2cManager::readBytes(uint8_t deviceAddr, uint8_t regAddr, uint8_t* data, uint8_t length) {
+void I2C_Manager::readBytes(uint8_t deviceAddr, uint8_t regAddr, uint8_t* data, uint8_t length) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
     if (channel == -1 || !selectDevice(channel)) return;  // Invalid channel or failed to select it
 
@@ -95,7 +95,7 @@ void I2cManager::readBytes(uint8_t deviceAddr, uint8_t regAddr, uint8_t* data, u
 }
 
 // Method to write a single byte to a specific register of an I2C device
-void I2cManager::writeByte(uint8_t deviceAddr, uint8_t regAddr, uint8_t data) {
+void I2C_Manager::writeByte(uint8_t deviceAddr, uint8_t regAddr, uint8_t data) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
     if (channel == -1 || !selectDevice(channel)) return;  // Invalid channel or failed to select it
 
