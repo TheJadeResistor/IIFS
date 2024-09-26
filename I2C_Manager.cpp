@@ -21,13 +21,16 @@
 
 #include "I2C_Manager.h"
 
+#define I2C_SDA 21
+#define I2C_SCL 22
+
 // Constructor to initialize the multiplexer address
 I2C_Manager::I2C_Manager(uint8_t multiplexerAddr) : multiplexerAddress(multiplexerAddr), currentChannel(0xFF) {
 }
 
 // Initialize the I2C bus
 void I2C_Manager::begin() {
-    Wire.begin();  // Initialize I2C bus
+    Wire.begin(I2C_SDA, I2C_SCL);  // Initialize I2C bus
 }
 
 // Private method to switch to a specific channel on the TCA9548A
@@ -81,11 +84,16 @@ uint8_t I2C_Manager::getDeviceAddress(uint8_t channel){
 // Method to read a single byte from a specific register of an I2C device
 uint8_t I2C_Manager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
-    if (channel == -1 || !selectDevice(channel)) return 0;  // Invalid channel or failed to select it
+    if (channel == -1 || !selectDevice(channel)) {  // Invalid channel or failed to select it
+      Serial.println("Error selecting multiplexer channel: readByte");
+      return 0;
+    }
 
     Wire.beginTransmission(deviceAddr);
     Wire.write(regAddr);  // Specify the register to read
-    Wire.endTransmission(false);  // Send the register address and keep the connection open
+    if (Wire.endTransmission(false) != 0) {  // Send register and check for errors and keep the connection open
+        return 0;  // Transmission failed
+    }
     Wire.requestFrom(deviceAddr, (uint8_t)1);  // Request one byte of data
     return Wire.available() ? Wire.read() : 0;  // Return the byte received, or 0 if nothing is received
 }
@@ -93,11 +101,13 @@ uint8_t I2C_Manager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
 // Method to read multiple bytes from a specific register of an I2C device
 void I2C_Manager::readBytes(uint8_t deviceAddr, uint8_t regAddr, uint8_t* data, uint8_t length) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
-    if (channel == -1 || !selectDevice(channel)) return;  // Invalid channel or failed to select it
+    if (channel == -1 || !selectDevice(channel)) {  // Invalid channel or failed to select it
+      Serial.println("Error selecting multiplexer channel: readBytes");
+    }
 
     Wire.beginTransmission(deviceAddr);
     Wire.write(regAddr);  // Specify the register to start reading from
-    Wire.endTransmission(false);
+    Wire.endTransmission(false); // Send register and check for errors and keep the connection open
     Wire.requestFrom(deviceAddr, length);  // Request multiple bytes
     for (uint8_t i = 0; i < length && Wire.available(); i++) {
         data[i] = Wire.read();  // Read the data into the array
@@ -107,7 +117,9 @@ void I2C_Manager::readBytes(uint8_t deviceAddr, uint8_t regAddr, uint8_t* data, 
 // Method to write a single byte to a specific register of an I2C device
 void I2C_Manager::writeByte(uint8_t deviceAddr, uint8_t regAddr, uint8_t data) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
-    if (channel == -1 || !selectDevice(channel)) return;  // Invalid channel or failed to select it
+    if (channel == -1 || !selectDevice(channel)) {  // Invalid channel or failed to select it
+      Serial.println("Error selecting multiplexer channel: writeByte");
+    }
 
     Wire.beginTransmission(deviceAddr);
     Wire.write(regAddr);  // Specify the register to write to

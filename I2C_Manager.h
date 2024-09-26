@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Wire.h>  // For I2C communication
+#include <Arduino.h> // For serial debug
+#include <Wire.h>    // For I2C communication
 #include <vector>
-#include <utility>  // For std::pair
+#include <utility>   // For std::pair
 
 
 class I2C_Manager {
