@@ -59,13 +59,16 @@ void readAndFilterIMUData() {
 
         // Convert filtered data into quaternion
         quaternions[i] = imuDevices[i].getQuaternion();
+
+        //add newly created quaternion to the imu fusion list
+        imuFusion.setIMUQuaternion(i, quaternions[i]);
     }
 }
 
 // Function to fuse the quaternions from multiple IMUs into one
 void fuseIMUQuaternions() {
     // Fuse all quaternions together
-    imuFusion.fuseIMUs(quaternions, NUM_IMUS, fusedQuaternion);
+    fusedQuaternion = imuFusion.fuseIMUs();
 }
 
 void setup() {

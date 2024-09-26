@@ -36,7 +36,7 @@ public:
     int8_t getDeviceChannel(uint8_t deviceAddress);
 
     // Get the I2C address associated with a specific device address
-    uint8_t getDeviceAddress(uint8_t index);
+    uint8_t getDeviceAddress(uint8_t channel);
 
     // Read data from the connected I2C device (BMI160 or others)
     uint8_t readByte(uint8_t deviceAddr, uint8_t regAddr);

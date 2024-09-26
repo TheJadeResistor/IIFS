@@ -68,6 +68,16 @@ int8_t I2C_Manager::getDeviceChannel(uint8_t deviceAddress) {
     return -1;  // Device not found
 }
 
+// Get the I2C address associated with a specific device address
+uint8_t I2C_Manager::getDeviceAddress(uint8_t channel){
+    for (auto &device : devices) {
+        if (device.second == channel) {
+            return device.first;  // Return the device address
+        }
+    }
+    return -1;  // Device not found
+}
+
 // Method to read a single byte from a specific register of an I2C device
 uint8_t I2C_Manager::readByte(uint8_t deviceAddr, uint8_t regAddr) {
     int8_t channel = getDeviceChannel(deviceAddr);  // Get the channel for this device
