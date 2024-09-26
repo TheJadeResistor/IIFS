@@ -11,8 +11,6 @@
 // Number of IMUs
 #define NUM_IMUS 2
 
-const int startChannel = 1; //channel 0 shared by main bus, cant use
-//implement this
 // Declare I2C manager object
 I2C_Manager i2cManager(TCA_ADDR);
 
