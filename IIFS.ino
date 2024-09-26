@@ -96,6 +96,13 @@ void loop() {
     Serial.print(fusedQuaternion.y); Serial.print(", ");
     Serial.println(fusedQuaternion.z);
 
+    float roll, pitch, yaw;
+    fusedQuaternion.toEuler(roll, pitch, yaw);
+    Serial.print("Fused Quaternion to Euler: ");
+    Serial.print("roll: "); Serial.print(roll); Serial.print(", ");
+    Serial.print("pitch: "); Serial.print(pitch); Serial.print(", ");
+    Serial.print("yaw: "); Serial.println(yaw);
+
     delay(100);
 }
 
