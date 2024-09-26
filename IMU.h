@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Quaternion.h>  // Assuming you have a Quaternion class
 
+const uint8_t IMU_I2C_ADDRESS = 0x70; //address for imu multiplexer
 
 class IMU {
 public:
@@ -20,7 +21,7 @@ public:
 
 class BMI160 : public IMU {
 public:
-    BMI160(uint8_t address = 0x69);  // Constructor with optional I2C address
+    BMI160(uint8_t address = IMU_I2C_ADDRESS);  // Constructor with optional I2C address
     bool begin() override;
     void readData() override;
     Quaternion getQuaternion() override;
