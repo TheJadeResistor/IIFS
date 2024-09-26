@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Quaternion.h>  // Assuming you have a Quaternion class
 
-const uint8_t IMU_I2C_ADDRESS = 0x70; //address for imu multiplexer
+const uint8_t IMU_I2C_ADDRESS = 0x70; //address for imu multiplexer 
 
 class IMU {
 public:
@@ -36,4 +36,8 @@ private:
     void calculateOrientation();  // Helper to calculate quaternion/orientation
     Quaternion currentQuaternion;
 };
+
+
+
+
 
