@@ -12,7 +12,7 @@
 #define NUM_IMUS 2
 
 const int startChannel = 1; //channel 0 shared by main bus, cant use
-
+//implement this
 // Declare I2C manager object
 I2C_Manager i2cManager(TCA_ADDR);
 
@@ -37,7 +37,7 @@ void initializeIMUs() {
     i2cManager.begin();
 
     // Initialize each IMU on a specific channel
-    for (uint8_t i = startChannel; i < NUM_IMUS; i++) {
+    for (uint8_t i = 0; i < NUM_IMUS; i++) {
         i2cManager.addDevice(IMU_ADDR, i);  // Add each IMU to a specific channel on TCA9548A
         
         // Select the IMU channel and initialize the IMU
