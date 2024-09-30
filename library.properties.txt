@@ -1,0 +1,8 @@
+name=IIFS
+version=1.0.0
+author=Your Name
+maintainer=Your Email
+sentence=Integrated IMU Fusion System for robotic applications.
+paragraph=This library provides a framework for integrating multiple IMUs and filtering data for robotic systems.
+category=Sensor
+url=https://example.com
